@@ -2,7 +2,7 @@ import express from 'express';
 import ProductManager from './ProductManager.js';
 
 
-const product1 = new ProductManager("./prueba.json");
+const product1 = new ProductManager("./productos.json");
 
 const app = express();
 
