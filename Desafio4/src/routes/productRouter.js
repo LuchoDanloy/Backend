@@ -1,5 +1,6 @@
 import { Router } from "express";
 import ProductManager from "./ProductManager.js";
+import {socketServer} from "../app.js"
 
 const product1 = new ProductManager("./productos.json");
 
@@ -33,12 +34,17 @@ productRouter.get('/', async (req,res)=>{
    //obtengo el limit pasado por query param.
    let {limit} = req.query;
 
-   //si el limite es mayor a cero lo filtro y retorno el nuevo arreglo
-   if (limit > 0){
-       const productsLimit = products.slice(0,limit);
-       res.status(200).json(productsLimit);
-       return;
+    //si el limite es mayor a cero lo filtro y retorno el nuevo arreglo
+    if (limit > 0){
+        const productsLimit = products.slice(0,limit);
+        //EMIT PARA INFORMAR LOS PROUDUCTOS
+        socketServer.emit('getProducts', productsLimit)
+        res.status(200).json(productsLimit);
+        return;
    }; 
+
+   //EMIT PARA INFORMAR LOS PROUDUCTOS
+   socketServer.emit('getProducts', products)
 
     res.status(200).json(products);
 })
@@ -48,6 +54,11 @@ productRouter.get('/:pid', async (req,res)=>{
     const productId = +req.params.pid;
     const product = await product1.getProductById(productId);
     res.status(200).json(product);
+
+    //EMIT PARA INFORMAR LOS PROUDUCTOS
+    const products = [];
+    products.push(product);
+    socketServer.emit('getProducts', products)
 })
 
 //POST
@@ -57,6 +68,10 @@ productRouter.post('/', async (req,res)=>{
 
     //agregamos el producto
     await product1.addProduct(product);
+
+    const products = await product1.getProducts();
+    //EMIT PARA INFORMAR LOS PROUDUCTOS
+    socketServer.emit('getProducts', products)
 
     res.status(201).json(product);
 })
@@ -70,6 +85,10 @@ productRouter.put('/:pid', async (req,res)=>{
     //modificamos el producto
     await product1.updateProduct(productId,newProduct);
 
+    const products = await product1.getProducts();
+    //EMIT PARA INFORMAR LOS PROUDUCTOS
+    socketServer.emit('getProducts', products)
+
     res.status(200).json(newProduct);
 })
 
@@ -80,6 +99,10 @@ productRouter.delete('/:pid', async (req,res)=>{
     const respuesta = await product1.deleteProduct(productId);
 
     res.status(200).json(respuesta);
+  
+    //EMIT PARA INFORMAR LOS PROUDUCTOS
+    const products = await product1.getProducts();
+    socketServer.emit('getProducts', products)
 })
 
 export default productRouter;

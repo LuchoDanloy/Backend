@@ -10,7 +10,7 @@ homeRouter.get('/', async (req,res)=>{
     try{
         //obtengo el contenido
         const products = await product1.getProducts();
-        res.render('products',{title:'Prodcutos',products})
+        res.render('home',{title:'Prodcutos', products})
     }catch(error){
         res.status(404).send(error);
     }
@@ -22,7 +22,7 @@ homeRouter.get('/', async (req,res)=>{
     try{
         //obtengo el contenido
         const products = await product1.getProducts();
-        res.render('products',{title:'Prodcutos',products})
+        res.render('realTimeProducts',{title:'Prodcutos', products})
     }catch(error){
         res.status(404).send(error);
     }

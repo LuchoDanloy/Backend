@@ -6,6 +6,7 @@ import {engine} from 'express-handlebars';
 import {resolve} from 'path';
 import { Server } from 'socket.io';
 
+
 const server_port = 8080;
 const app = express();
 const httpServer = app.listen(server_port, () => {
@@ -32,7 +33,7 @@ app.use('/api/carts', cartRouter);
 
 
 //SOCKET
-const socketServer = new Server(httpServer);
+export const socketServer = new Server(httpServer);
 
 socketServer.on('connection', socket =>{
 
@@ -42,4 +43,6 @@ socketServer.on('connection', socket =>{
     socket.on('message', (data) => {
         console.log(data);
     });
+
+
 })
