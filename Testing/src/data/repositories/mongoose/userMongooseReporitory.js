@@ -15,6 +15,8 @@ class UserMongooseReporitory
       lastName: document.lastName,
       email: document.email,
       age: document.age,
+      password:document.password,
+      isAdmin: document?.isAdmin
     }));
 
     return {
@@ -38,7 +40,8 @@ class UserMongooseReporitory
         lastName: userDocument?.lastName,
         email: userDocument?.email,
         age: userDocument?.age,
-        password: userDocument?.password
+        password: userDocument?.password,
+        isAdmin: userDocument?.isAdmin
     });
   }
 
@@ -57,7 +60,8 @@ class UserMongooseReporitory
         lastName: userDocument?.lastName,
         email: userDocument?.email,
         age: userDocument?.age,
-        password: userDocument?.password
+        password: userDocument?.password,
+        isAdmin: userDocument?.isAdmin
     });
   }
 
@@ -72,6 +76,7 @@ class UserMongooseReporitory
         email: userDocument.email,
         age: userDocument.age,
         password: userDocument.password,
+        isAdmin: userDocument?.isAdmin
     });
   }
 

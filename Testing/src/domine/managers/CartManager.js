@@ -1,4 +1,6 @@
 import container from "../../container.js";
+import productManager from "../managers/ProductManager.js"
+import ticketManager from "../managers/ticketManager.js";
 
 class CartManager{
 
@@ -185,6 +187,69 @@ class CartManager{
         catch(error){
             console.error(error);
         }
+    }
+
+    async savePurchase(cid){
+
+        try{   
+            //PRIMERO RECUPERO EL CARRITO CON SUS PRODUCTOS
+            let cartProducts = await this.cartRepository.getCartById(cid);
+
+            //SI EL CARRITO NO EXISTE DAMOS AVISO Y SALIMOS
+            if(!cartProducts){
+                return `El Carrito ${cid} no existe!`;
+            }
+            
+            //UNA VEZ QUE TENEMOS EL CARRITO VAMOS A COMRPOBAR LA CANTIDAD DE LOS PRODUCTOS Y SUS STOCKS
+            
+            const prodmanager = new productManager();
+
+            for (const product of cartProducts.products) {
+
+                let stockProduct = await prodmanager.chekStockProduct(product.product.id, product.quantity);
+        
+
+                if (!stockProduct) {
+                    throw new Error(`El producto ${product.product.id} no tiene el stock necesario para realizar la compra!`);
+                }
+            }
+
+            /*SI LLEGO ACA ES PORQUE TODOS LOS PRODUCTOS TIENEN STOCK. 
+            VAMOS A DESCONTAR ESOS PRODUCTOS DEL STOCK       */
+
+            for (const product of cartProducts.products) {
+                await prodmanager.subStockProduct(product.product.id, product.quantity);
+            }
+
+
+            /*COMPRA FINALIZADA - CREAR TICKET DE COMPRA
+            1-GENERAR TICKET
+            2-ENVIAR POR MAIL
+            3-BORRAR CARRITO DE COMPRAS     */
+            
+            const user = req.user;
+            console.log(user);
+
+/*             const data = {
+                "code":"123",
+                "purchase_datetime": Date().toLocaleString(),
+                "amount": "123",
+                "purchaser":"luciano@gmail.com"
+            }
+
+            console.log("Data:****************************")
+            console.log(data)
+
+            const tickmanager = new ticketManager();
+            let ticket = await tickmanager.create(data);
+            return ticket */
+
+
+        }
+        catch(error){
+            console.error(error);
+        }  
+
     }
 
     

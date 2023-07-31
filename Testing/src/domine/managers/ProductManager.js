@@ -70,6 +70,41 @@ class ProductManager{
             console.error(error);
         }       
     }
+
+    async chekStockProduct(pid, quantity){
+        try{
+            //obtengo el producto
+            const product = await this.productRepository.getProductById(pid);
+
+            //valido el stock
+            if (quantity <= product.stock){
+                return true;
+            } 
+
+            return false;
+
+        }
+        catch(error){
+            console.error(error);
+        }        
+    }
+
+    async subStockProduct(pid, quantity){
+        try{
+            //obtengo el producto
+            const product =  await this.productRepository.getProductById(pid);
+
+            //modifico el stock
+            product.stock = product.stock - quantity
+
+            //grabo el nuevo stock en el producto
+            await this.productRepository.updateProduct(pid, product);
+
+        }
+        catch(error){
+            console.error(error);
+        }        
+    }
 }
 
 export default ProductManager;

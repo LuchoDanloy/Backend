@@ -8,6 +8,7 @@ class User
       this.lastName = props.lastName;
       this.email = props.email;
       this.age = props.age;
+      this.password = props.password;
   }
 }
 

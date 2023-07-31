@@ -9,13 +9,13 @@ class TicketMongooseRepository
     const ticketDocuments = await ticketSchema.paginate({}, { limit, page });
     const { docs, ...pagination } = ticketDocuments;
 
-    const tickets = docs.map(document => new Ticket(
-      document._id,
-      document.code,
-      document.purchase_datetime,
-      document.amount,
-      document.purchaser
-    ));
+    const tickets = docs.map(document => new Ticket({
+      id: document._id,
+      code: document.code,
+      purchase_datetime: document.purchase_datetime,
+      amount: document.amount,
+      purchaser: document.purchaser
+    }));
 
     return {
         tickets,
@@ -27,13 +27,13 @@ class TicketMongooseRepository
   {
     const document = await ticketSchema.create(data);
 
-    return new Ticket(
-        document._id,
-        document.code,
-        document.purchase_datetime,
-        document.amount,
-        document.purchaser
-    );
+    return new Ticket({
+        id: document._id,
+        code: document.code,
+        purchase_datetime: document.purchase_datetime,
+        amount: document.amount,
+        purchaser: document.purchaser
+      });
   }
 
 }

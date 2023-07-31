@@ -35,8 +35,9 @@ class cartMongooseRepository{
     }
 
     async addCart(cart){
-        try{
+        try{  
             const cartDocument = await cartSchema.create(cart);
+
             return {
                 id: cartDocument._id,
                 products: cartDocument.products

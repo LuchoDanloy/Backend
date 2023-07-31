@@ -8,7 +8,8 @@ const UserSchema = new Schema({
   lastName: { type: Schema.Types.String },
   email: { type: Schema.Types.String, unique: true, required: true },
   age: { type: Schema.Types.Number, default: 18 },
-  password: { type: Schema.Types.String }
+  password: { type: Schema.Types.String },
+  isAdmin: { type: Schema.Types.Boolean, default: false }
 });
 
 UserSchema.plugin(paginate);
