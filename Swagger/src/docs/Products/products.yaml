@@ -1,0 +1,185 @@
+openapi: 3.0.0
+info:
+  title: Product API
+  version: 1.0.0
+  description: API Wine Products
+
+paths:
+  /api/products:
+    get:
+      summary: Get all products or limit
+      operationId: listLimit
+      parameters:
+        - name: limit
+          in: query
+          description: Number of products to return (optional)
+          schema:
+            type: integer
+        - name: query
+          in: query
+          description: Query string for filtering (optional)
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: Sort order for the results (optional)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+    post:
+      summary: Create a new product
+      operationId: save
+      requestBody:
+        description: Product object that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  product:
+                    $ref: '#/components/schemas/Product'
+                  message:
+                    type: string
+  /api/products/{pid}:
+    get:
+      summary: Get a product by ID
+      operationId: getOne
+      parameters:
+        - name: pid
+          in: path
+          description: ID of the product to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  product:
+                    $ref: '#/components/schemas/Product'
+    put:
+      summary: Update a product by ID
+      operationId: update
+      parameters:
+        - name: pid
+          in: path
+          description: ID of the product to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Updated product object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  product:
+                    $ref: '#/components/schemas/Product'
+                  message:
+                    type: string
+    delete:
+      summary: Delete a product by ID
+      operationId: deleteOne
+      parameters:
+        - name: pid
+          in: path
+          description: ID of the product to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: ObjectID
+          description: id autogenerado por Mongo.
+        title:
+          type: string
+          description: titulo del producto.
+        description:
+          type: string
+          description: descripcion completa del producto.
+        code:
+          type: string
+          description: codigo unico del producto.
+        price: 
+          type: Number
+          description: precio del producto.
+        status:
+          type: string
+          description: estado del producto (activo/baja).
+        stock: 
+          type: Number
+          description: stock del producto.
+        category:
+          type: string
+          description: categoria del producto.
+        thumbnail:
+          type: string
+          description: imagenes del producto.
+      example:
+        _id: ObjectId("644d3769e210e356c943c32f")
+        title: "producto 1"
+        description: "Este es el producto 1 agregado"
+        code: "abc1"
+        price: 100
+        status: "activo"
+        stock: 25
+        category: "Cervezas"
+        thumbnail: [image1, imagen2]
+  requestBodies:
+    updateProduct:
+      type: object

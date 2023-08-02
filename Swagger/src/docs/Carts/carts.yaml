@@ -1,0 +1,261 @@
+openapi: 3.0.0
+info:
+  title: Cart API
+  version: 1.0.0
+  description: API for managing carts and purchases
+
+paths:
+  /api/carts:
+    get:
+      summary: Get all carts
+      operationId: list
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  carts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Cart'
+    post:
+      summary: Create a new cart
+      operationId: saveCart
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  cart:
+                    $ref: '#/components/schemas/Cart'
+  /api/carts/{cid}:
+    get:
+      summary: Get a cart by ID
+      operationId: getOne
+      parameters:
+        - name: cid
+          in: path
+          description: ID of the cart to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  cart:
+                    $ref: '#/components/schemas/Cart'
+    delete:
+      summary: Remove all products from the cart
+      operationId: deleteAllProductsCart
+      parameters:
+        - name: cid
+          in: path
+          description: ID of the cart
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  cart:
+                    $ref: '#/components/schemas/Cart'
+    put:
+      summary: Update products in the cart
+      operationId: updateProductsCart
+      parameters:
+        - name: cid
+          in: path
+          description: ID of the cart to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Updated cart object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  cart:
+                    $ref: '#/components/schemas/Cart'
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Add a product to the cart
+      operationId: saveProductCart
+      parameters:
+        - name: cid
+          in: path
+          description: ID of the cart to add the product to
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          description: ID of the product to add to the cart
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  cart:
+                    $ref: '#/components/schemas/Cart'
+  /api/carts/{cid}/products/{pid}:
+    delete:
+      summary: Remove a product from the cart
+      operationId: deleteProductCart
+      parameters:
+        - name: cid
+          in: path
+          description: ID of the cart
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          description: ID of the product to remove from the cart
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  cart:
+                    $ref: '#/components/schemas/Cart'
+    put:
+      summary: Update the quantity of a product in the cart
+      operationId: updateProductQuantity
+      parameters:
+        - name: cid
+          in: path
+          description: ID of the cart
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          description: ID of the product to update the quantity for
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Updated product quantity
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  cart:
+                    $ref: '#/components/schemas/Cart'
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Make a purchase from the cart
+      operationId: savePurchase
+      parameters:
+        - name: cid
+          in: path
+          description: ID of the cart to make the purchase from
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        id:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+    CartItem:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+        quantity:
+          type: integer
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+        description:
+          type: string
