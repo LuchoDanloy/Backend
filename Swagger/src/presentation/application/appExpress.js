@@ -19,10 +19,6 @@ class AppExpress
         this.app.use(express.urlencoded({extended:true}));
         this.app.use(cookieParser());
 
-    }
-
-    build()
-    {
         const swaggerOptions = {
             definition:{
                 openapi: '3.0.1',
@@ -31,12 +27,16 @@ class AppExpress
                     description: "API para Wine e-commerce"
                 }
             },
-            apis: [`../../docs/Carts/*.yaml`]
-        }
-        const specs = swaggerJsdoc(swaggerOptions);
-        this.app.use('/apidocs',swaggerUiExpress.serve,swaggerUiExpress.setup(specs)) 
+            apis: [`./src/docs/**/*.yaml`]
+            
+      }
+      const specs = swaggerJsdoc(swaggerOptions);
+      this.app.use('/apidocs',swaggerUiExpress.serve,swaggerUiExpress.setup(specs)) 
 
+    }
 
+    build()
+    {
         this.app.use('/api/products', productRouter);
         this.app.use('/api/carts', cartRouter);
     
