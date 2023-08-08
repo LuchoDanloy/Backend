@@ -76,8 +76,10 @@ export const updateProductQuantity = async (req, res)=>{
 
 export const savePurchase = async (req, res)=>{
 
+    const { cid }= req.params;
+
     const manager = new CartManager();
 
-    const cart = await manager.addCart(req.body)
-    res.send({status: 'success', cart, message: 'Cart created.' })
+    const ticket = await manager.savePurchase(cid)
+    res.send({status: 'success', message: ticket })
 };

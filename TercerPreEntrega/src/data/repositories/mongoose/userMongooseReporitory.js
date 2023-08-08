@@ -15,6 +15,7 @@ class UserMongooseReporitory
       lastName: document.lastName,
       email: document.email,
       age: document.age,
+      password:document.password
     }));
 
     return {

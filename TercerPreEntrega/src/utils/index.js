@@ -15,5 +15,5 @@ export const generateToken = async (user) =>
 {
     console.log("ENTRA AL GENERATE TOKEN");
     console.log(process.env.PRIVATE_KEY);
-    return jwt.sign({ user: { ...user, password: undefined } }, process.env.PRIVATE_KEY, { expiresIn: '1m' });
+    return jwt.sign({ user: { ...user, password: undefined } }, process.env.PRIVATE_KEY, { expiresIn: '5m' });
 }

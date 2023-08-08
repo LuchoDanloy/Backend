@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { list, getOne, saveCart, saveProductCart, deleteProductCart, deleteAllProductsCart, updateProductsCart, updateProductQuantity } from "../controllers/cartController.js";
+import { list, getOne, saveCart, saveProductCart, deleteProductCart, deleteAllProductsCart, updateProductsCart, updateProductQuantity, savePurchase } from "../controllers/cartController.js";
+import auth from "../middlewares/auth.js";
 
 const cartRouter = Router();
 
@@ -28,6 +29,6 @@ cartRouter.put('/:cid', updateProductsCart);
 cartRouter.put('/:cid/products/:pid', updateProductQuantity);
 
 //POST PURCHASE
-cartRouter.post('/:cid/purchase', updateProductQuantity);
+cartRouter.post('/:cid/purchase', auth, savePurchase);
 
 export default cartRouter;

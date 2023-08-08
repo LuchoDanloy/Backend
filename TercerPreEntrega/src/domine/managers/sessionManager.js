@@ -7,6 +7,7 @@ class sessionManager{
 
     async login(email, password)
     {
+
         await loginValidation.parseAsync({ email, password });
 
         const manager = new UserManager();
@@ -17,7 +18,7 @@ class sessionManager{
         {
             return res.status(401).send({ message: 'Login failed, invalid password.'})
         }
-
+        
         return await generateToken(user);
     }
 

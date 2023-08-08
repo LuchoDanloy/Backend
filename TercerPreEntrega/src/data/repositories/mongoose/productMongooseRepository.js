@@ -23,17 +23,17 @@ class productMongooseRepository{
             ]);
 
             
-            const products =  productDocument.map(document => new Product(
-                document._id,
-                document.title,
-                document.description,
-                document.code,
-                document.price,
-                document.status,
-                document.stock,
-                document.category,
-                document.thumbnail               
-            )); 
+            const products = productDocument.map(document => new Product({
+                id: document._id,
+                title: document.title,
+                description: document.description,
+                code: document.code,
+                price: document.price,
+                status: document.status,
+                stock: document.stock,
+                category: document.category,
+                thumbnail: document.thumbnail               
+            })); 
       
             return{
                 products
@@ -48,17 +48,17 @@ class productMongooseRepository{
     async addProduct(product){
         try{
             const productDocument = await productSchema.create(product);
-            return new Product(
-                productDocument._id,
-                productDocument.title,
-                productDocument.description,
-                productDocument.code,
-                productDocument.price,
-                productDocument.status,
-                productDocument.stock,
-                productDocument.category,
-                productDocument.thumbnail
-            ); 
+            return new Product({
+                id: productDocument?.id,
+                title: productDocument?.title,
+                description: productDocument?.description,
+                code: productDocument?.code,
+                price : productDocument?.price,
+                status: productDocument?.status,
+                stock: productDocument?.stock,
+                category : productDocument?.category,
+                thumbnail : productDocument?.thumbnail
+            }); 
         }
         catch(error){
             console.log(error);
@@ -69,17 +69,18 @@ class productMongooseRepository{
 
         try{
             const productDocument= await productSchema.findOne({_id: pid});
-            return new Product(
-                productDocument._id,
-                productDocument.title,
-                productDocument.description,
-                productDocument.code,
-                productDocument.price,
-                productDocument.status,
-                productDocument.stock,
-                productDocument.category,
-                productDocument.thumbnail
-            ); 
+
+            return new Product({
+                id: productDocument?.id,
+                title: productDocument?.title,
+                description: productDocument?.description,
+                code: productDocument?.code,
+                price : productDocument?.price,
+                status: productDocument?.status,
+                stock: productDocument?.stock,
+                category : productDocument?.category,
+                thumbnail : productDocument?.thumbnail
+            }); 
         }
         catch(error){
             console.error(error);
@@ -90,24 +91,24 @@ class productMongooseRepository{
     async updateProduct(pid, newProduct){
         
         try{
-            const productDocument = productSchema.updateOne({_id: pid}, newProduct);
+            const productDocument = await productSchema.updateOne({_id: pid}, newProduct);
 
             if(!productDocument)
             {
               throw new Error('Product dont exist.');
             }
 
-            return new Product(
-                productDocument._id,
-                productDocument.title,
-                productDocument.description,
-                productDocument.code,
-                productDocument.price,
-                productDocument.status,
-                productDocument.stock,
-                productDocument.category,
-                productDocument.thumbnail
-            ); 
+            return new Product({
+                id: productDocument?.id,
+                title: productDocument?.title,
+                description: productDocument?.description,
+                code: productDocument?.code,
+                price : productDocument?.price,
+                status: productDocument?.status,
+                stock: productDocument?.stock,
+                category : productDocument?.category,
+                thumbnail : productDocument?.thumbnail
+            }); 
         }
         catch(error){
             console.error(error);
