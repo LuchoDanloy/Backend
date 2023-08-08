@@ -1,0 +1,1 @@
+{"level":"error","message":"ReferenceError: res is not defined\n    at sessionManager.login (file:///C:/Users/lucia/Desktop/FullStack/Backend/Logger/src/domine/managers/sessionManager.js:19:13)\n    at async login (file:///C:/Users/lucia/Desktop/FullStack/Backend/Logger/src/presentation/controllers/sessionController.js:13:27)"}
